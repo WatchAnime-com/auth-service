@@ -52,6 +52,7 @@ class IAuthService(
         newUserModel.setPassword(cUser.password)
         newUserModel.userName = cUser.username
         newUserModel.email = cUser.email
+        newUserModel.role = AuthRole.USER
         newUserModel.preUpdate()
 
         val generatedToken = jwtService.generateToken(newUserModel)

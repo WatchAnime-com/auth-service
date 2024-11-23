@@ -27,11 +27,6 @@ class JwtFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-        // Skip the authentication filter for authentication-related endpoints
-        if (request.servletPath.contains("/api/v1/auth")) {
-            filterChain.doFilter(request, response)
-            return
-        }
 
         // Retrieve the Authorization header
         val authHeader: String? = request.getHeader("Authorization")
@@ -39,6 +34,7 @@ class JwtFilter(
         // If no Authorization header or if it's not a Bearer token, just continue the filter chain
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response)
+            println("no header")
             return
         }
 
@@ -47,19 +43,16 @@ class JwtFilter(
 
         // If there's no JWT token, continue the filter chain
         if (jwtToken.isEmpty()) {
+            println("no token")
             filterChain.doFilter(request, response)
             return
         }
-
-        // Validate the token using the auth service
         if (!authService.authUser(jwtToken)) {
             filterChain.doFilter(request, response)
+            println("no authed")
             return
         }
-
-        // Extract the user's email from the token
         val email = jwtService.extractSubject(jwtToken)
-
         // Load the user details using UserDetailsService
         val userDetails: UserDetails = userDetailsService.loadUserByUsername(email)
 
@@ -69,14 +62,9 @@ class JwtFilter(
             null,
             userDetails.authorities
         )
-
-        // Set the details of the authentication token
+        userDetails.authorities.forEach { principal -> println(principal) }
         authToken.details = WebAuthenticationDetailsSource().buildDetails(request)
-
-        // Set the authentication in the SecurityContext
         SecurityContextHolder.getContext().authentication = authToken
-
-        // Continue the filter chain
         filterChain.doFilter(request, response)
     }
 }

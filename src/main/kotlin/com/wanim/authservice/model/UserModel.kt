@@ -31,7 +31,7 @@ class UserModel : UserDetails {
     var pk: Long = generatePk()
 
     @Enumerated(EnumType.STRING)
-    var role: AuthRole? = null
+    var role: AuthRole = AuthRole.USER
 
     @Lob
     @Column(nullable = false, updatable = false, unique = true)
@@ -43,15 +43,17 @@ class UserModel : UserDetails {
 
     fun getAuth(): List<SimpleGrantedAuthority> {
         val grantedRoles: MutableList<SimpleGrantedAuthority> = mutableListOf()
-        role?.getAuth()?.forEach { grantedRoles.add(it) }
+        role.getAuth().forEach { grantedRoles.add(it) }
         permissions.forEach { perms ->
-            val permissionAuthority = SimpleGrantedAuthority("ROLE_$perms")
+            val permissionAuthority = SimpleGrantedAuthority("ROLE_${perms.name}")
             if (grantedRoles.none { it.authority == permissionAuthority.authority }) {
                 grantedRoles.add(permissionAuthority)
             }
         }
+
         return grantedRoles
     }
+
 
 
     @ElementCollection(fetch = FetchType.EAGER)

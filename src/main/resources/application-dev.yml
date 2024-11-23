@@ -12,3 +12,6 @@ spring:
   jpa:
     hibernate:
      ddl-auto: update
+  cloud:
+    compatibility-verifier:
+      enabled: false

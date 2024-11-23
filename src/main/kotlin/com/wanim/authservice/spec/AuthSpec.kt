@@ -43,13 +43,7 @@ class AuthSpec(val authParams: AuthParams) {
             }
 
             authParams.username?.let {
-                predicates = builder.and(
-                    predicates,
-                    builder.like(
-                        builder.lower(root.get("userName")),
-                        it.lowercase()
-                    )
-                )
+                predicates = builder.and(predicates, builder.like(builder.lower(root.get("userName")), it.lowercase()))
             }
 
 

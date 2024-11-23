@@ -70,10 +70,12 @@ enum class AuthRole(
 
     // Method to get authorities for the role
     fun getAuth(): List<SimpleGrantedAuthority> {
-        // Create a list of SimpleGrantedAuthority from the permissions
-        val grantedRoles = permissions.map { SimpleGrantedAuthority(it.name) }.toMutableList()
-        // Add role prefix to the role name (e.g., ROLE_ADMIN)
-        grantedRoles.add(SimpleGrantedAuthority("ROLE_${this.name}"))
-        return grantedRoles
+        // Map permissions to SimpleGrantedAuthority
+        val authorities = permissions.map { SimpleGrantedAuthority("ROLE_"+it.name) }.toMutableList()
+
+        // Add role-specific authority
+        authorities.add(SimpleGrantedAuthority("ROLE_${this.name}"))
+
+        return authorities
     }
 }
