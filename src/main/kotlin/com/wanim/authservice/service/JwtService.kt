@@ -52,11 +52,13 @@ class JwtService {
     }
 
     private fun extractAllClaims(token: String?): Claims {
-        return Jwts.parserBuilder()
+
+        return Jwts.parser()
             .setSigningKey(getSignKey()) // Use the key returned by getSignKey
             .build()
             .parseClaimsJws(token)
             .body
+
     }
 
     private fun generateToken(claims: Map<String, Any>, subject: String): String {

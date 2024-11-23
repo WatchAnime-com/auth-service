@@ -34,9 +34,9 @@ dependencies {
 
     ///implementation("org.json:json:20240303")
     //implementation("com.auth0:java-jwt:3.3.0")
-    implementation("io.jsonwebtoken:jjwt-api:0.11.1")
-    implementation("io.jsonwebtoken:jjwt-impl:0.11.1")
-    implementation("io.jsonwebtoken:jjwt-jackson:0.11.1")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.6")
+    implementation("io.jsonwebtoken:jjwt-impl:0.12.6")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.12.6")
     //implementation("io.fusionauth:fusionauth-jwt:5.2.2")
 
 
